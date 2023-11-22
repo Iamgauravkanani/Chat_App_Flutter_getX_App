@@ -1,4 +1,6 @@
+import 'package:chat_app_3/Modules/Utils/Helpers/Authentication_Helper/auth_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Login_Screen extends StatelessWidget {
   const Login_Screen({super.key});
@@ -14,7 +16,7 @@ class Login_Screen extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 400,
+              height: 300,
               width: double.infinity,
               decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -46,17 +48,69 @@ class Login_Screen extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10),
+            const SizedBox(
+              height: 10,
+            ),
+            InkWell(
+              onTap: () {},
+              child: Ink(
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(0, 5), color: Colors.grey, blurRadius: 5)
+                  ],
+                  color: Colors.blue,
+                ),
+                child: Container(
+                  height: 40,
+                  width: 180,
+                  alignment: Alignment.center,
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
               ),
-              height: 50,
-              width: 180,
-              alignment: Alignment.center,
-              child: const Text(
-                "Login",
-                style: TextStyle(color: Colors.white),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            InkWell(
+              onTap: () async {
+                Map? res = await Auth_Helper.auth_helper.AnnoynimousLogin();
+
+                if (res['user'] != null) {
+                  Get.toNamed('/home');
+                } else if (res['error'] != null) {
+                  Get.snackbar("Flutter Chat App", "Login Failed");
+                }
+              },
+              child: Ink(
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0, 5),
+                      color: Colors.grey,
+                      blurRadius: 5,
+                    )
+                  ],
+                  color: Colors.green,
+                ),
+                child: Container(
+                  height: 40,
+                  width: 180,
+                  alignment: Alignment.center,
+                  child: const Text(
+                    "Annoynimous Login",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
