@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:chat_app_3/Modules/Views/Login_Screen/Model/Sign_Up_Model/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Auth_Helper {
@@ -19,6 +20,23 @@ class Auth_Helper {
     try {
       UserCredential credential = await auth.signInAnonymously();
       res['user'] = credential.user;
+    } on FirebaseAuthException catch (e) {
+      res['error'] = e.code;
+    }
+    return res;
+  }
+
+  //TODO:SignUp
+
+  Future<Map<String, dynamic>> signUp({required SignUp data}) async {
+    Map<String, dynamic> res = {};
+    try {
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        email: data.email,
+        password: data.password,
+      );
+
+      res['user'] = userCredential.user;
     } on FirebaseAuthException catch (e) {
       res['error'] = e.code;
     }

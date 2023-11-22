@@ -1,10 +1,16 @@
 import 'package:chat_app_3/Modules/Utils/Helpers/Authentication_Helper/auth_helper.dart';
+import 'package:chat_app_3/Modules/Views/Login_Screen/Model/Sign_Up_Model/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Login_Screen extends StatelessWidget {
-  const Login_Screen({super.key});
+  Login_Screen({super.key});
+  GlobalKey<FormState> signKey = GlobalKey<FormState>();
+  TextEditingController signup_email_con = TextEditingController();
+  TextEditingController signup_password_con = TextEditingController();
 
+  String? signup_email;
+  String? signup_password;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,6 +111,112 @@ class Login_Screen extends StatelessWidget {
                   alignment: Alignment.center,
                   child: const Text(
                     "Annoynimous Login",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            InkWell(
+              onTap: () async {
+                Get.defaultDialog(
+                  title: "Chat App",
+                  content: Form(
+                    key: signKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return "Enter valid email";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (val) {
+                            signup_email = val;
+                          },
+                          controller: signup_email_con,
+                          decoration: InputDecoration(
+                            hintText: "enter email",
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        TextFormField(
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return "Enter valid password";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (val) {
+                            signup_password = val;
+                          },
+                          controller: signup_password_con,
+                          decoration: InputDecoration(
+                            hintText: "enter password",
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (signKey.currentState!.validate()) {
+                              signKey.currentState!.save();
+
+                              SignUp signup_detail = SignUp(
+                                email: signup_email!,
+                                password: signup_password!,
+                              );
+
+                              Map<String, dynamic> res = await Auth_Helper
+                                  .auth_helper
+                                  .signUp(data: signup_detail);
+
+                              if (res['user'] != null) {
+                                // Get.snackbar("Chat App", "Signup Success");
+                                Get.back();
+                              }
+                            }
+
+                            signup_email_con.clear();
+                            signup_password_con.clear();
+                          },
+                          child: Text("Sign Up"),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              child: Ink(
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0, 5),
+                      color: Colors.grey,
+                      blurRadius: 5,
+                    )
+                  ],
+                  color: Colors.orange,
+                ),
+                child: Container(
+                  height: 40,
+                  width: 180,
+                  alignment: Alignment.center,
+                  child: const Text(
+                    "Sign Up",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
