@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:chat_app_3/Modules/Utils/Helpers/Authentication_Helper/auth_helper.dart';
 import 'package:chat_app_3/Modules/Views/Login_Screen/Model/Sign_In_Model/sign_in_model.dart';
 import 'package:chat_app_3/Modules/Views/Login_Screen/Model/Sign_Up_Model/sign_up.dart';
@@ -99,7 +101,7 @@ class Login_Screen extends StatelessWidget {
                         await Auth_Helper.auth_helper.signIn(data: loginData);
 
                     if (res['user'] != null) {
-                      Get.toNamed('/home');
+                      Get.offNamedUntil('/home', (routes) => false);
                     } else if (res['error'] != null) {
                       Get.snackbar("Flutter Chat App", "Login Failed");
                     }
@@ -140,7 +142,7 @@ class Login_Screen extends StatelessWidget {
                   Map? res = await Auth_Helper.auth_helper.AnnoynimousLogin();
 
                   if (res['user'] != null) {
-                    Get.toNamed('/home');
+                    Get.offNamedUntil('/home', (routes) => false);
                   } else if (res['error'] != null) {
                     Get.snackbar("Flutter Chat App", "Login Failed");
                   }
@@ -283,7 +285,7 @@ class Login_Screen extends StatelessWidget {
                 onTap: () async {
                   Map res = await Auth_Helper.auth_helper.signInWithGoogle();
                   if (res['user'] != null) {
-                    Get.toNamed('/home');
+                    Get.offNamedUntil('/home', (routes) => false);
                   } else if (res['error'] != null) {
                     Get.snackbar("Flutter Chat App", "Login Failed");
                   }

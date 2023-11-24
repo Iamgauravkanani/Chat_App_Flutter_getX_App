@@ -85,4 +85,10 @@ class Auth_Helper {
     }
     return res;
   }
+
+  //TODO:Sign Out
+  void signOut() async {
+    await auth.signOut();
+    await googleSignIn.signOut();
+  }
 }
