@@ -19,7 +19,7 @@ class Home_Screen extends StatelessWidget {
                     backgroundColor: Colors.red,
                     radius: 90,
                     child: CircleAvatar(
-                      radius: 80,
+                      radius: 85,
                       foregroundImage: NetworkImage(
                           "https://img.freepik.com/premium-photo/dog-suit-sunglasses-sits-chair_781958-1562.jpg"),
                     ),
@@ -28,7 +28,7 @@ class Home_Screen extends StatelessWidget {
                     radius: 90,
                     backgroundColor: Colors.orange,
                     child: CircleAvatar(
-                      radius: 80,
+                      radius: 85,
                       foregroundImage: NetworkImage(
                           "${Auth_Helper.auth_helper.auth.currentUser?.photoURL}"),
                     ),

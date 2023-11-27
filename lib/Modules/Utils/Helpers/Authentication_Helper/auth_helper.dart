@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:chat_app_3/Modules/Utils/Helpers/Cloud_FireStore_Helper/cloud_firestore_helper.dart';
 import 'package:chat_app_3/Modules/Views/Login_Screen/Model/Sign_In_Model/sign_in_model.dart';
 import 'package:chat_app_3/Modules/Views/Login_Screen/Model/Sign_Up_Model/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,6 +80,13 @@ class Auth_Helper {
       // Once signed in, return the UserCredential
       UserCredential userCredential =
           await auth.signInWithCredential(credential);
+
+      Firestore_Helper.firestore_helper.addUser(user_data: {
+        "name": userCredential.user?.displayName,
+        "email": userCredential.user?.email,
+        "photo": userCredential.user?.photoURL,
+        "uid": userCredential.user?.uid,
+      });
       res['user'] = userCredential.user;
     } on FirebaseAuthException catch (e) {
       res['error'] = e.code;
