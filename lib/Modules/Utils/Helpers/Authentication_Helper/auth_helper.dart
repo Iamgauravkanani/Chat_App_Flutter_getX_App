@@ -54,6 +54,17 @@ class Auth_Helper {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: data.email, password: data.password);
+
+      Firestore_Helper.firestore_helper.addUser(user_data: {
+        "name": (userCredential.user?.displayName == null)
+            ? userCredential.user?.email?.split("@")[0]
+            : userCredential.user?.displayName,
+        "email": userCredential.user?.email,
+        "photo": (userCredential.user?.photoURL == null)
+            ? "https://img.freepik.com/premium-photo/panda-suit-tie-with-cup-coffee-generative-ai_634053-4050.jpg"
+            : userCredential.user?.photoURL,
+        "uid": userCredential.user?.uid,
+      });
       res['user'] = userCredential.user;
     } on FirebaseAuthException catch (e) {
       res['error'] = e.code;
