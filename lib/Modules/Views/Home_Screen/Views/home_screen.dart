@@ -1,4 +1,6 @@
 import 'package:chat_app_3/Modules/Utils/Helpers/Authentication_Helper/auth_helper.dart';
+import 'package:chat_app_3/Modules/Utils/Helpers/Cloud_FireStore_Helper/cloud_firestore_helper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -67,6 +69,46 @@ class Home_Screen extends StatelessWidget {
                     "${Auth_Helper.auth_helper.auth.currentUser?.email?.split("@")[0]}")
             : Text("${Auth_Helper.auth_helper.auth.currentUser?.displayName}"),
         centerTitle: true,
+      ),
+      body: StreamBuilder(
+        stream: Firestore_Helper.firestore_helper.fetchUser(),
+        builder: (ctx, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("${snapshot.error}"),
+            );
+          } else if (snapshot.hasData) {
+            QuerySnapshot<Map<String, dynamic>>? querySnapshot = snapshot.data;
+            List<QueryDocumentSnapshot<Map<String, dynamic>>>? userData =
+                querySnapshot?.docs;
+
+            return ListView.builder(
+                itemCount: userData?.length,
+                itemBuilder: (ctx, i) {
+                  return Card(
+                      elevation: 3,
+                      child: ListTile(
+                        title: Text("${userData?[i]['name']}"),
+                        subtitle: Text("${userData?[i]['email']}"),
+                        leading: CircleAvatar(
+                          radius: 30,
+                          foregroundImage:
+                              NetworkImage("${userData?[i]['photo']}"),
+                        ),
+                        trailing: IconButton(
+                          onPressed: () {
+                            Firestore_Helper.firestore_helper.deleteUser(
+                                deleteData: "${userData?[i]['uid']}");
+                          },
+                          icon: Icon(Icons.delete_outline),
+                        ),
+                      ));
+                });
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }
