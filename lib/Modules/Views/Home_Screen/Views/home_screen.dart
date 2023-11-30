@@ -1,5 +1,6 @@
 import 'package:chat_app_3/Modules/Utils/Helpers/Authentication_Helper/auth_helper.dart';
 import 'package:chat_app_3/Modules/Utils/Helpers/Cloud_FireStore_Helper/cloud_firestore_helper.dart';
+import 'package:chat_app_3/Modules/Views/Chat_Screen/Model/Receiver_Details_Model/receiver_details_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -88,6 +89,13 @@ class Home_Screen extends StatelessWidget {
                   return Card(
                       elevation: 3,
                       child: ListTile(
+                        onTap: () {
+                          Receiver receiver = Receiver(
+                              name: userData?[i]['name'],
+                              uid: userData?[i]['uid'],
+                              photo: userData?[i]['photo']);
+                          Get.toNamed("/chat", arguments: receiver);
+                        },
                         title: Text("${userData?[i]['name']}"),
                         subtitle: Text("${userData?[i]['email']}"),
                         leading: CircleAvatar(

@@ -1,3 +1,4 @@
+import 'package:chat_app_3/Modules/Views/Chat_Screen/Views/chat_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,7 @@ void main() async {
       getPages: [
         GetPage(name: '/', page: () => Login_Screen()),
         GetPage(name: '/home', page: () => Home_Screen()),
+        GetPage(name: '/chat', page: () => Chat_Screen()),
       ],
     ),
   );
