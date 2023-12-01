@@ -34,14 +34,61 @@ class Firestore_Helper {
   }
 
   Future<void> sendMessage({required ChatDetails chatDetails}) async {
-    await firestore
-        .collection("chats")
-        .doc("${chatDetails.receiverUid}_${chatDetails.senderUid}")
-        .set({
-      "sentby": chatDetails.senderUid,
-      "receivedby": chatDetails.receiverUid,
-      "message": chatDetails.message,
-      "timestamp": FieldValue.serverTimestamp(),
-    });
+    //todo:given value to u1 and u2 for check if chatroom is available or not
+    String u1 = chatDetails.senderUid;
+    String u2 = chatDetails.receiverUid;
+
+    //todo:fetched all chaRooms
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await firestore.collection("chats").get();
+
+    List<QueryDocumentSnapshot> allDocs = querySnapshot.docs;
+
+    bool chatRoomAvailable = false;
+    String fetchedUser1 = "";
+    String fetchedUser2 = "";
+
+    for (QueryDocumentSnapshot element in allDocs) {
+      String user1 = element.id.split("_")[0];
+      String user2 = element.id.split("_")[1];
+
+      if ((user1 == u1 || user1 == u2) && (user2 == u1 || user2 == u2)) {
+        chatRoomAvailable = true;
+        fetchedUser1 = element.id.split("_")[0];
+        fetchedUser2 = element.id.split("_")[1];
+      }
+    }
+
+    if (chatRoomAvailable == true) {
+      await firestore
+          .collection("chats")
+          .doc("${fetchedUser1}_${fetchedUser2}")
+          .collection("messages")
+          .add({
+        "sentby": chatDetails.senderUid,
+        "receivedby": chatDetails.receiverUid,
+        "message": chatDetails.message,
+        "timestamp": FieldValue.serverTimestamp(),
+      });
+    } else {
+      await firestore
+          .collection("chats")
+          .doc("${chatDetails.receiverUid}_${chatDetails.senderUid}")
+          .set({
+        "sender": chatDetails.senderUid,
+        "receiver": chatDetails.receiverUid,
+      });
+
+      await firestore
+          .collection("chats")
+          .doc("${chatDetails.receiverUid}_${chatDetails.senderUid}")
+          .collection("messages")
+          .add({
+        "sentby": chatDetails.senderUid,
+        "receivedby": chatDetails.receiverUid,
+        "message": chatDetails.message,
+        "timestamp": FieldValue.serverTimestamp(),
+      });
+    }
   }
 }
