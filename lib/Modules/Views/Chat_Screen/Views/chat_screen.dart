@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'package:chat_app_3/Modules/Utils/Helpers/Authentication_Helper/auth_helper.dart';
 import 'package:chat_app_3/Modules/Utils/Helpers/Cloud_FireStore_Helper/cloud_firestore_helper.dart';
+import 'package:chat_app_3/Modules/Utils/Stream/stream.dart';
 import 'package:chat_app_3/Modules/Views/Chat_Screen/Model/Chat_Model/chat_model.dart';
 import 'package:chat_app_3/Modules/Views/Chat_Screen/Model/Receiver_Details_Model/receiver_details_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Chat_Screen extends StatelessWidget {
@@ -32,7 +34,24 @@ class Chat_Screen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: Container(),
+              child: StreamBuilder(
+                stream: messageData,
+                builder: (ctx, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text("${snapshot.error}"));
+                  } else if (snapshot.hasData) {
+                    QuerySnapshot? querysnapshot = snapshot.data;
+                    List<QueryDocumentSnapshot>? chats = querysnapshot?.docs;
+                    return ListView.builder(
+                        reverse: true,
+                        itemCount: chats?.length,
+                        itemBuilder: (ctx, i) {
+                          return Chip(label: Text("${chats?[i]['message']}"));
+                        });
+                  }
+                  return Center(child: CircularProgressIndicator());
+                },
+              ),
             ),
             TextFormField(
               controller: messageController,
