@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:developer';
 import 'package:chat_app_3/Modules/Utils/Helpers/Authentication_Helper/auth_helper.dart';
 import 'package:chat_app_3/Modules/Utils/Helpers/Cloud_FireStore_Helper/cloud_firestore_helper.dart';
@@ -16,6 +18,7 @@ class Chat_Screen extends StatelessWidget {
     Receiver receiver = ModalRoute.of(context)!.settings.arguments as Receiver;
 
     return Scaffold(
+      backgroundColor: Color(0xffF7F9FB),
       appBar: AppBar(
         title: Text("${receiver.name}"),
         centerTitle: true,
@@ -42,12 +45,42 @@ class Chat_Screen extends StatelessWidget {
                   } else if (snapshot.hasData) {
                     QuerySnapshot? querysnapshot = snapshot.data;
                     List<QueryDocumentSnapshot>? chats = querysnapshot?.docs;
-                    return ListView.builder(
-                        reverse: true,
-                        itemCount: chats?.length,
-                        itemBuilder: (ctx, i) {
-                          return Chip(label: Text("${chats?[i]['message']}"));
-                        });
+                    return (chats!.isEmpty == true)
+                        ? Center(
+                            child: Container(
+                            height: 300,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://cdn.dribbble.com/users/411641/screenshots/3921966/listen.gif"),
+                            )),
+                          ))
+                        : ListView.builder(
+                            reverse: true,
+                            itemCount: chats.length,
+                            itemBuilder: (ctx, i) {
+                              return Row(
+                                mainAxisAlignment: (Auth_Helper.auth_helper.auth
+                                            .currentUser?.uid ==
+                                        chats[i]['sentby'])
+                                    ? MainAxisAlignment.end
+                                    : MainAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Chip(
+                                          label:
+                                              Text("${chats[i]['message']}")),
+                                      (chats[i]['timestamp'] == null)
+                                          ? Text(" ")
+                                          : Text(
+                                              "${chats[i]['timestamp'].toDate().toString().split(" ")[1].split(":")[0]}:"
+                                              "${chats[i]['timestamp'].toDate().toString().split(" ")[1].split(":")[1]}")
+                                    ],
+                                  ),
+                                ],
+                              );
+                            });
                   }
                   return Center(child: CircularProgressIndicator());
                 },
