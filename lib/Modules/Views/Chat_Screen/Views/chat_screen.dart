@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, camel_case_types
 
 import 'dart:developer';
 import 'package:chat_app_3/Modules/Utils/Helpers/Authentication_Helper/auth_helper.dart';
@@ -18,16 +18,16 @@ class Chat_Screen extends StatelessWidget {
     Receiver receiver = ModalRoute.of(context)!.settings.arguments as Receiver;
 
     return Scaffold(
-      backgroundColor: Color(0xffF7F9FB),
+      backgroundColor: const Color(0xffF7F9FB),
       appBar: AppBar(
-        title: Text("${receiver.name}"),
+        title: Text(receiver.name),
         centerTitle: true,
         actions: [
           CircleAvatar(
             radius: 30,
-            foregroundImage: NetworkImage("${receiver.photo}"),
+            foregroundImage: NetworkImage(receiver.photo),
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           ),
         ],
@@ -48,13 +48,15 @@ class Chat_Screen extends StatelessWidget {
                     return (chats!.isEmpty == true)
                         ? Center(
                             child: Container(
-                            height: 300,
-                            decoration: BoxDecoration(
+                              height: 300,
+                              decoration: const BoxDecoration(
                                 image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://cdn.dribbble.com/users/411641/screenshots/3921966/listen.gif"),
-                            )),
-                          ))
+                                  image: NetworkImage(
+                                      "https://cdn.dribbble.com/users/411641/screenshots/3921966/listen.gif"),
+                                ),
+                              ),
+                            ),
+                          )
                         : ListView.builder(
                             reverse: true,
                             itemCount: chats.length,
@@ -72,7 +74,7 @@ class Chat_Screen extends StatelessWidget {
                                           label:
                                               Text("${chats[i]['message']}")),
                                       (chats[i]['timestamp'] == null)
-                                          ? Text(" ")
+                                          ? const Text(" ")
                                           : Text(
                                               "${chats[i]['timestamp'].toDate().toString().split(" ")[1].split(":")[0]}:"
                                               "${chats[i]['timestamp'].toDate().toString().split(" ")[1].split(":")[1]}")
@@ -82,7 +84,7 @@ class Chat_Screen extends StatelessWidget {
                               );
                             });
                   }
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 },
               ),
             ),
@@ -102,16 +104,16 @@ class Chat_Screen extends StatelessWidget {
 
                     Firestore_Helper.firestore_helper
                         .sendMessage(chatDetails: chatdetails);
-                    log("${message}");
+                    log("$message");
                     messageController.clear();
                   },
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                 ),
                 hintText: "send message.....",
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
           ],
