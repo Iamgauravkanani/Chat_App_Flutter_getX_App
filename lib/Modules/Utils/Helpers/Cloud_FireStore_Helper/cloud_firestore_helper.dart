@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:chat_app_3/Modules/Utils/Helpers/Authentication_Helper/auth_helper.dart';
 import 'package:chat_app_3/Modules/Views/Chat_Screen/Model/Chat_Model/chat_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 
 class Firestore_Helper {
@@ -9,6 +12,19 @@ class Firestore_Helper {
   static final Firestore_Helper firestore_helper = Firestore_Helper._();
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+
+  //TODO:Add Image to Firebase Storage and Retrive from There.
+
+  Future<String> uploadImage({required File image}) async {
+    var storageRef = firebaseStorage.ref().child("Image/${image.path}");
+    var uploadImage = storageRef.putFile(image);
+
+    await uploadImage;
+
+    String downloadedUrl = await uploadImage.snapshot.ref.getDownloadURL();
+    return downloadedUrl;
+  }
 
   //todo:Add User
 

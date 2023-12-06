@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:chat_app_3/Modules/Utils/Helpers/Authentication_Helper/auth_helper.dart';
 import 'package:chat_app_3/Modules/Utils/Helpers/Cloud_FireStore_Helper/cloud_firestore_helper.dart';
 import 'package:chat_app_3/Modules/Utils/Stream/stream.dart';
@@ -6,10 +9,18 @@ import 'package:chat_app_3/Modules/Views/Chat_Screen/Model/Receiver_Details_Mode
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
-class Home_Screen extends StatelessWidget {
+class Home_Screen extends StatefulWidget {
   const Home_Screen({super.key});
 
+  @override
+  State<Home_Screen> createState() => _Home_ScreenState();
+}
+
+class _Home_ScreenState extends State<Home_Screen> {
+  ImagePicker picker = ImagePicker();
+  File? image;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +63,59 @@ class Home_Screen extends StatelessWidget {
                 : Text(
                     "EMAIL: ${Auth_Helper.auth_helper.auth.currentUser?.email}"),
             const Divider(),
+            GestureDetector(
+              onTap: () {
+                Get.defaultDialog(
+                    title: "Choose Image From...",
+                    content: Container(
+                      height: 100,
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                              onPressed: () async {
+                                XFile? photo = await picker.pickImage(
+                                    source: ImageSource.camera);
+                                setState(() {
+                                  image = File(photo!.path);
+                                });
+
+                                String imgUrl = await Firestore_Helper
+                                    .firestore_helper
+                                    .uploadImage(image: image!);
+
+                                log("$imgUrl");
+                              },
+                              icon: Icon(
+                                Icons.camera_alt,
+                                size: 35,
+                              )),
+                          IconButton(
+                              onPressed: () async {
+                                XFile? photo = await picker.pickImage(
+                                    source: ImageSource.gallery);
+                                setState(() {
+                                  image = File(photo!.path);
+                                });
+                              },
+                              icon: Icon(
+                                Icons.photo,
+                                size: 35,
+                              )),
+                        ],
+                      ),
+                    ));
+              },
+              child: (image == null)
+                  ? CircleAvatar(
+                      radius: 80,
+                    )
+                  : CircleAvatar(
+                      radius: 80,
+                      foregroundImage: FileImage(image!),
+                    ),
+            ),
           ],
         ),
       ),
