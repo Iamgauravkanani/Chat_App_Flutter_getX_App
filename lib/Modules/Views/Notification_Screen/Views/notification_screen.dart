@@ -1,7 +1,20 @@
+import 'package:chat_app_3/Modules/Utils/Helpers/Notification_Helper/notification_helper.dart';
 import 'package:flutter/material.dart';
 
-class Notification_Screen extends StatelessWidget {
+class Notification_Screen extends StatefulWidget {
   const Notification_Screen({super.key});
+
+  @override
+  State<Notification_Screen> createState() => _Notification_ScreenState();
+}
+
+class _Notification_ScreenState extends State<Notification_Screen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Notification_Helper.notification_helper.initNotification();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +27,12 @@ class Notification_Screen extends StatelessWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(onPressed: () {}, child: Text("Simple Notification")),
+          ElevatedButton(
+              onPressed: () {
+                Notification_Helper.notification_helper
+                    .showSimpleNotification();
+              },
+              child: Text("Simple Notification")),
           ElevatedButton(
               onPressed: () {}, child: Text("Scheduled Notification")),
           ElevatedButton(
