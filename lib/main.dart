@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import 'Modules/Views/Home_Screen/Views/home_screen.dart';
 import 'Modules/Views/Login_Screen/Views/login_screen.dart';
+import 'Modules/Views/Notification_Screen/Views/notification_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,6 +23,7 @@ void main() async {
         GetPage(name: '/', page: () => Login_Screen()),
         GetPage(name: '/home', page: () => Home_Screen()),
         GetPage(name: '/chat', page: () => Chat_Screen()),
+        GetPage(name: '/notification', page: () => Notification_Screen()),
       ],
     ),
   );

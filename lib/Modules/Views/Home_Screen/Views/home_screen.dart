@@ -123,6 +123,11 @@ class _Home_ScreenState extends State<Home_Screen> {
         actions: [
           IconButton(
               onPressed: () {
+                Get.toNamed('/notification');
+              },
+              icon: Icon(Icons.notifications_outlined)),
+          IconButton(
+              onPressed: () {
                 Auth_Helper.auth_helper.signOut();
 
                 Get.offNamedUntil('/', (route) => false);
