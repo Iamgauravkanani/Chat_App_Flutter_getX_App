@@ -36,9 +36,17 @@ class _Notification_ScreenState extends State<Notification_Screen> {
           ElevatedButton(
               onPressed: () {}, child: Text("Scheduled Notification")),
           ElevatedButton(
-              onPressed: () {}, child: Text("Big Picture Notification")),
+              onPressed: () {
+                Notification_Helper.notification_helper
+                    .showBigPictureNotification();
+              },
+              child: Text("Big Picture Notification")),
           ElevatedButton(
-              onPressed: () {}, child: Text("Media Style Notification")),
+              onPressed: () {
+                Notification_Helper.notification_helper
+                    .showNotificationMediaStyle();
+              },
+              child: Text("Media Style Notification")),
         ],
       )),
     );
