@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:chat_app_3/Modules/Utils/Helpers/Notification_Helper/notification_helper.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class Notification_Screen extends StatefulWidget {
@@ -9,11 +12,20 @@ class Notification_Screen extends StatefulWidget {
 }
 
 class _Notification_ScreenState extends State<Notification_Screen> {
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+
+  getFCMToken() async {
+    String? token = await firebaseMessaging.getToken();
+    log("${token}");
+    return token;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Notification_Helper.notification_helper.initNotification();
+    getFCMToken();
   }
 
   @override
