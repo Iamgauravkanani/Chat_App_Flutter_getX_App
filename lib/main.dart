@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'Modules/Views/Home_Screen/Views/home_screen.dart';
+import 'Modules/Views/Login_Screen/Views/login.dart';
 import 'Modules/Views/Login_Screen/Views/login_screen.dart';
 import 'Modules/Views/Notification_Screen/Views/notification_screen.dart';
 import 'Modules/Views/Welcome_Screen/Views/welcome_screen.dart';
