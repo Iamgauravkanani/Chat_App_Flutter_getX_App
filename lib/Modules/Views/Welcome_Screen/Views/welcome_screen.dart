@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../Utils/Constants/constant.dart';
 
 class WelcomeScreen extends StatelessWidget {
