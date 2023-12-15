@@ -16,4 +16,8 @@ class Constant {
   static TextEditingController password_con = TextEditingController();
   static String? password;
   static String? email;
+
+  //HomeScreen Constants
+
+  static Color textcolor = Colors.white;
 }

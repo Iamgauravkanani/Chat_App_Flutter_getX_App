@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../../../Utils/Helpers/Authentication_Helper/auth_helper.dart';
 import '../../../../Controller/Image_Picker_Controller/image_picker_controller.dart';
 
-Drawer mydrawer() {
+Drawer myDrawer() {
   ImagePicker picker = ImagePicker();
   ImagePickerController controller = Get.put(ImagePickerController());
   return Drawer(

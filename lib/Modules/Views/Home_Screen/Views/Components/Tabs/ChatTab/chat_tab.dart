@@ -28,9 +28,9 @@ class ChatTab extends StatelessWidget {
             return ListView.builder(
                 itemCount: userData?.length,
                 itemBuilder: (ctx, i) {
-                  return Card(
-                      elevation: 3,
-                      child: ListTile(
+                  return Column(
+                    children: [
+                      ListTile(
                         onTap: () async {
                           Receiver receiver = Receiver(
                               name: userData?[i]['name'],
@@ -60,7 +60,10 @@ class ChatTab extends StatelessWidget {
                           },
                           icon: Icon(Icons.delete_outline),
                         ),
-                      ));
+                      ),
+                      Divider(),
+                    ],
+                  );
                 });
           }
           return Center(
