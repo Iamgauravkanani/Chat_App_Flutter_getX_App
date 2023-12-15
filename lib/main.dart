@@ -5,6 +5,7 @@ import 'package:chat_app_3/Modules/Views/Splash_Screen/Views/splash_screen.dart'
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'Modules/Views/Home_Screen/Views/Screen/homescreen.dart';
 import 'Modules/Views/Home_Screen/Views/home_screen.dart';
 import 'Modules/Views/Login_Screen/Views/login.dart';
 
@@ -31,7 +32,7 @@ void main() async {
         useMaterial3: true,
       ),
       getPages: [
-        GetPage(name: '/', page: () => SplashScreen()),
+        GetPage(name: '/', page: () => HomeScreen()),
         GetPage(name: '/welcome', page: () => WelcomeScreen()),
         GetPage(name: '/login', page: () => Login()),
         GetPage(name: '/home', page: () => Home_Screen()),
